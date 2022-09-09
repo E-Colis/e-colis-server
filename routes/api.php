@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthApiController;
-
+use App\Http\Controllers\AnnounceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +31,19 @@ Route::controller(AuthApiController::class)->group(function () {
         Route::Post('/logout-all', 'logoutAll');
     });
 });
+
+
+// public routes
+Route::apiResource('announces', AnnounceController::class)->only([
+    'index', 'show'
+]);
+
+
+// protected routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('announces', AnnounceController::class)->only([
+        'store', 'update', 'destroy'
+    ]);
+});
+
+ 

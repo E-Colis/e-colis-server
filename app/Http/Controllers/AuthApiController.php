@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthApiController extends Controller
 {
+    /**
+     * Create user account.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
@@ -21,15 +27,20 @@ class AuthApiController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors(), 403);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = User::create(array_merge(
+            $request->all(),
+            ['password' => Hash::make($request->password),]
+        ));
 
         return $this->authentificate($user);
     }
 
+    /**
+     * login user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(Request $request){
         $credentials = $request->only('email', 'password');
  
@@ -39,14 +50,32 @@ class AuthApiController extends Controller
         return $this->authentificate(Auth::user());
     }
 
+    /**
+     * logout user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logout(Request $request){
-        $request->user()->currentAccessToken()->delete();
+        return $request->user()->currentAccessToken()->delete();
     }
 
+    /**
+     * logout accout from all connected devices.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logoutAll(Request $request){
-        $request->user()->tokens()->delete();
+        return $request->user()->tokens()->delete();
     }
 
+    /**
+     * create auth token for user.
+     *
+     * @param  App\Models\User  $user
+     * @return Object
+     */
     private function authentificate(User $user){
         $token = $user->createToken('auth_token');
 
