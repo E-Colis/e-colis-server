@@ -31,7 +31,10 @@ jobs:
         cp .env.example .env
         php artisan key:generate
 
-    - name: test running application
+    - name: run the app
       run: |
         php artisan serve &
+        
+    - name: Health check
+      run: |
         curl http://localhost:8000/health-check | grep good
