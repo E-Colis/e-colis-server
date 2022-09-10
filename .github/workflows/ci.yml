@@ -33,5 +33,5 @@ jobs:
 
     - name: test running application
       run: |
-        php artisan serve &&
-        curl http://localhost:8000 | grep laravel
+        php artisan serve &
+        curl http://localhost:8000/health-check | grep good
