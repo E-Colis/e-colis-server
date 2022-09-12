@@ -3,7 +3,7 @@ name: CI-Testing
 on:
   push:
     branches:
-      - ci-tests
+      - prod
 
 jobs:
   app-tests:

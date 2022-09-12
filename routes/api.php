@@ -47,7 +47,7 @@ Route::apiResource('announces', AnnounceController::class)->only([
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('announces', AnnounceController::class)->only([
         'store', 'update', 'destroy'
-    ]);
+    ])->middleware('can:create-announce');
 });
 
  

@@ -32,6 +32,8 @@ class AuthApiController extends Controller
             ['password' => Hash::make($request->password),]
         ));
 
+        $user->assignRole('User');
+
         return $this->authentificate($user);
     }
 
