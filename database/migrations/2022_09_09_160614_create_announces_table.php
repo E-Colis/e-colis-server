@@ -19,6 +19,7 @@ class CreateAnnouncesTable extends Migration
             $table->string('destination');
             $table->integer('weight');
             $table->date('date');
+            $table->boolean('reserved')->default(false);
             $table->integer('user_id');
             $table->timestamps();
         });

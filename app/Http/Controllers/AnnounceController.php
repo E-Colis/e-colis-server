@@ -29,9 +29,15 @@ class AnnounceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Announce::with('user:id,name')->paginate(10);
+        return Announce::with('user:id,name')
+            ->origin($request->origin)
+            ->destination($request->destination)
+            ->date($request->date)
+            ->notExpired()
+            ->latest()
+            ->paginate(10);
     }
 
     /**
